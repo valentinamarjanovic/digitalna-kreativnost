@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #050504; color: #F2EFEA; font-family: "Space Grotesk", Helvetica, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #D3A84C; text-decoration: none; }
+  a:hover { color: #EBCE86; }
+  input, textarea, button, select { font: inherit; }
+  ::selection { background: #D3A84C; color: #050504; }
+  @keyframes dkFadeA { 0%,42% { opacity: 1; } 50%,92% { opacity: 0; } 100% { opacity: 1; } }
+  @keyframes dkFadeB { 0%,42% { opacity: 0; } 50%,92% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes dkReveal { from { opacity: 0; transform: translateY(46px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes dkTicker { from { transform: translateX(0); } to { transform: translateX(-33.3333%); } }
+</style>
+</helmet>
+<div style="max-width: 100%; overflow-x: hidden; background: #050504;">
+
+  <header style="{{ headerStyle }}">
+    <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+      <nav style="display: flex; flex-wrap: nowrap; align-items: center; gap: 16px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 1.1px; white-space: nowrap;">
+        <a href="#top" style="color: #B9B2A6;" style-hover="color:#F2EFEA">{{ t.navHome }}</a>
+        <a href="#onama" style="color: #B9B2A6;" style-hover="color:#F2EFEA">{{ t.navAbout }}</a>
+        <a href="#usluge" style="color: #B9B2A6;" style-hover="color:#F2EFEA">{{ t.navServices }}</a>
+        <a href="#radovi" style="color: #B9B2A6;" style-hover="color:#F2EFEA">{{ t.navWork }}</a>
+      </nav>
+    </sc-if>
+    <a href="#top" style="{{ logoStyle }}">
+      <img src="assets/logo-mark.png" alt="Digitalna kreativnost" style="{{ navLogoStyle }}">
+      <span style="display: flex; flex-direction: column; line-height: 1.15;">
+        <span style="{{ navWordA }}">DIGITALNA</span>
+        <span style="{{ navWordB }}">KREATIVNOST</span>
+      </span>
+    </a>
+    <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-wrap: nowrap; align-items: center; justify-content: flex-end; gap: 12px; white-space: nowrap;">
+        <div style="display: flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid rgba(242,239,234,0.16); border-radius: 999px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.5px;">
+          <button onClick="{{ setSr }}" style="{{ srBtnStyle }}">SR</button>
+          <button onClick="{{ setEn }}" style="{{ enBtnStyle }}">EN</button>
+        </div>
+        <a href="#kontakt" style="padding: 11px 18px; border-radius: 999px; background: #D3A84C; color: #0B0A08; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1.4px; font-weight: 500; white-space: nowrap;" style-hover="background:#EBCE86">{{ t.navCta }}</a>
+      </div>
+    </sc-if>
+    <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ toggleMenu }}" aria-label="Meni" style="display: flex; flex-direction: column; justify-content: center; gap: 4.5px; width: 44px; height: 44px; padding: 0 12px; justify-self: end; background: transparent; border: none; cursor: pointer;">
+        <span style="display: block; width: 100%; height: 1.5px; background: #F2EFEA;"></span>
+        <span style="display: block; width: 100%; height: 1.5px; background: #D3A84C;"></span>
+        <span style="display: block; width: 100%; height: 1.5px; background: #F2EFEA;"></span>
+      </button>
+    </sc-if>
+  </header>
+
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position: sticky; top: 63px; z-index: 49; display: flex; flex-direction: column; gap: 4px; padding: 22px 20px 26px; background: rgba(5,5,4,0.97); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(211,168,76,0.28);">
+      <a href="#top" onClick="{{ closeMenu }}" style="padding: 12px 2px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 2px; color: #F2EFEA; border-bottom: 1px solid rgba(242,239,234,0.1);">{{ t.navHome }}</a>
+      <a href="#onama" onClick="{{ closeMenu }}" style="padding: 12px 2px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 2px; color: #F2EFEA; border-bottom: 1px solid rgba(242,239,234,0.1);">{{ t.navAbout }}</a>
+      <a href="#usluge" onClick="{{ closeMenu }}" style="padding: 12px 2px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 2px; color: #F2EFEA; border-bottom: 1px solid rgba(242,239,234,0.1);">{{ t.navServices }}</a>
+      <a href="#radovi" onClick="{{ closeMenu }}" style="padding: 12px 2px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 2px; color: #F2EFEA; border-bottom: 1px solid rgba(242,239,234,0.1);">{{ t.navWork }}</a>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 18px;">
+        <a href="#kontakt" onClick="{{ closeMenu }}" style="padding: 15px 26px; border-radius: 999px; background: #D3A84C; color: #0B0A08; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 1.6px; font-weight: 500;">{{ t.navCta }}</a>
+        <div style="display: flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid rgba(242,239,234,0.16); border-radius: 999px;">
+          <button onClick="{{ setSr }}" style="{{ srBtnStyle }}">SR</button>
+          <button onClick="{{ setEn }}" style="{{ enBtnStyle }}">EN</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  
+
+  <section id="top" style="{{ heroSectionStyle }}">
+    <div aria-hidden="true" style="{{ heroBgStyle }}"></div>
+    <div aria-hidden="true" style="{{ heroVeilStyle }}"></div>
+    <div style="{{ heroInnerStyle }}">
+      <h1 style="{{ heroTitleStyle }}">{{ t.heroTitleA }} <span style="color: #D3A84C;">{{ t.heroTitleB }}</span></h1>
+      <p style="{{ heroBodyStyle }}">{{ t.heroBody }}</p>
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding-top: 6px;">
+        
+        <a href="#radovi" style="{{ heroCtaStyle }}" style-hover="border-color:#D3A84C;color:#D3A84C">{{ t.heroCta2 }}</a>
+      </div>
+      
+    </div>
+    <div id="usluge" style="{{ pillarsStyle }}">
+      <sc-for list="{{ pillars }}" as="s" hint-placeholder-count="4">
+        <div style="{{ pillarCellStyle }}">
+          <span style="color: #D3A84C; opacity: 0.95;">{{ s.icon }}</span>
+          <h3 style="{{ pillarTitleStyle }}">{{ s.title }}</h3>
+          <p style="{{ pillarBodyStyle }}">{{ s.body }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="radovi" style="{{ workPad }}">
+    <div style="{{ sectionHeadStyle }}">
+      
+      <h2 style="{{ h2Dark }}">{{ t.workTitle }}</h2><span style="{{ ruleDark }}"></span>
+      
+    </div>
+    <div style="{{ workGridStyle }}">
+      <sc-for list="{{ projects }}" as="p">
+        <article style="{{ cardStyle }}">
+          <div style="{{ cardFrameStyle }}">
+            <div style="position: relative; aspect-ratio: 16 / 9; transition: transform 700ms cubic-bezier(.2,.7,.2,1);" style-hover="transform: scale(1.05)">
+              <div role="img" aria-label="{{ p.title }}" style="{{ p.bg1 }}"></div>
+              <div role="img" aria-label="{{ p.title }}" style="{{ p.bg2 }}"></div>
+            </div>
+          </div>
+          <div style="{{ cardTextStyle }}">
+            <span style="{{ cardNoStyle }}">{{ p.no }}</span>
+            <h3 style="{{ cardTitleStyle }}">{{ p.title }}</h3>
+            <span style="{{ cardKindStyle }}">{{ p.kind }}</span>
+            <p style="{{ cardBodyStyle }}">{{ p.body }}</p>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="onama" style="{{ aboutStyle }}">
+    <div style="{{ aboutColStyle }}">
+      
+      <h2 style="{{ h2Light }}">DIGITALNA KREATIVNOST</h2>
+      <span style="{{ aboutRuleStyle }}"></span>
+      <h3 style="{{ aboutSubStyle }}">{{ t.aboutTitle }}</h3>
+      <p style="{{ aboutBodyStyle }}">{{ t.aboutBody1 }}</p>
+      <p style="{{ aboutBodyStyle }}">{{ t.aboutBody2 }}</p>
+    </div>
+    <div style="{{ stepsGridStyle }}">
+      <sc-for list="{{ steps }}" as="st" hint-placeholder-count="4">
+        <div style="{{ stepCellStyle }}">
+          <span style="{{ stepNoStyle }}">{{ st.no }}</span>
+          <h3 style="{{ stepTitleStyle }}">{{ st.title }}</h3>
+          <p style="{{ stepBodyStyle }}">{{ st.body }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="kontakt" style="{{ contactPad }}">
+    <div aria-hidden="true" style="position: absolute; top: 0; right: 0; bottom: 0; width: 62%; background-image: url('assets/kontakt-atelje-flat.png'); background-size: cover; background-position: center right; mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.35) 34%, rgba(0,0,0,0.8) 72%, #000 100%); -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.35) 34%, rgba(0,0,0,0.8) 72%, #000 100%); pointer-events: none;"></div>
+    <div style="{{ contactHeadStyle }}">
+      <h2 style="{{ h2Dark }}">{{ contactTitleText }}</h2><span style="{{ ruleDark }}"></span>
+      <p style="{{ contactBodyStyle }}">{{ t.contactBody }}</p>
+    </div>
+    <div style="position: relative; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 24px 72px; align-items: start;">
+      <div style="min-width: 0;">
+        <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; gap: 14px; padding: 40px 0;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 2px; color: #A67C1E;">{{ t.formSentLabel }}</span>
+            <p style="margin: 0; font-size: 26px; line-height: 1.35; color: #14120F;">{{ t.formSent }}</p>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+          <div style="{{ formStyle }}">
+            <label style="display: flex; flex-direction: column; gap: 8px; min-width: 0;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 2px; color: #6E6A62;">{{ t.formName }}</span>
+              <input type="text" style="width: 100%; min-width: 0; padding: 12px 2px; background: transparent; border: none; border-bottom: 1px solid rgba(20,18,15,0.22); color: #14120F; font-size: 16px; outline: none;" style-focus="border-bottom-color:#A67C1E">
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 8px; min-width: 0;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 2px; color: #6E6A62;">EMAIL</span>
+              <input type="email" style="width: 100%; min-width: 0; padding: 12px 2px; background: transparent; border: none; border-bottom: 1px solid rgba(20,18,15,0.22); color: #14120F; font-size: 16px; outline: none;" style-focus="border-bottom-color:#A67C1E">
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 8px; min-width: 0;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 2px; color: #6E6A62;">{{ t.formService }}</span>
+              <select style="width: 100%; min-width: 0; padding: 12px 2px; background: transparent; border: none; border-bottom: 1px solid rgba(20,18,15,0.22); color: #14120F; font-size: 16px; outline: none;" style-focus="border-bottom-color:#A67C1E">
+                <sc-for list="{{ serviceNames }}" as="n" hint-placeholder-count="7">
+                  <option value="{{ n }}" style="background:#FFFFFF;color:#14120F">{{ n }}</option>
+                </sc-for>
+              </select>
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 8px; min-width: 0;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 2px; color: #6E6A62;">{{ t.formMsg }}</span>
+              <textarea rows="4" style="width: 100%; min-width: 0; padding: 12px 2px; background: transparent; border: none; border-bottom: 1px solid rgba(20,18,15,0.22); color: #14120F; font-size: 16px; outline: none; resize: vertical;" style-focus="border-bottom-color:#A67C1E"></textarea>
+            </label>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 22px; padding-top: 6px;">
+              <button onClick="{{ send }}" style="{{ sendBtnStyle }}" style-hover="background:#A67C1E">{{ t.formCta }}</button>
+              <span style="{{ formNoteStyle }}">{{ t.formNote }}</span>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+      <div style="{{ contactSideStyle }}">
+        <img src="assets/logo-dk.png" alt="Digitalna kreativnost" style="{{ contactLogoStyle }}">
+        <span style="{{ contactLabelStyle }}">{{ t.contactLabel }}</span>
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <span style="{{ infoKeyStyle }}">EMAIL</span>
+          <a href="mailto:digitalnakreativnost2023@gmail.com" style="{{ infoMailStyle }}">digitalnakreativnost2023@gmail.com</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <span style="{{ infoKeyStyle }}">TELEFON</span>
+          <a href="tel:+38263242668" style="{{ infoValStyle }}">063 242 668</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <span style="{{ infoKeyStyle }}">LOKACIJA</span>
+          <span style="{{ infoLocStyle }}">Tivat / Online</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="{{ footerPad }}">
+    <span>© 2026 DIGITALNA KREATIVNOST · TIVAT</span>
+    <div style="display: flex; gap: 24px;">
+      
+      
+      
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;sr&quot;,&quot;en&quot;],&quot;default&quot;:&quot;sr&quot;,&quot;tsType&quot;:&quot;'sr' | 'en'&quot;,&quot;section&quot;:&quot;Sadržaj&quot;},&quot;instagram&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;digitalnakreativnost&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Sadržaj&quot;}}">
+const COPY = {
+  sr: {
+    navHome: "POČETNA", navContact: "KONTAKT",
+    navServices: "USLUGE", navWork: "PORTFOLIO", navProcess: "PROCES", navAbout: "O NAMA", navCta: "KONTAKT",
+    heroEyebrow: "TIVAT · CRNA GORA",
+    heroTitleA: "Dizajn koji",
+    heroTitleB: "živi",
+    heroBody: "Za brendove koji žele da izgledaju veliko. \nOd ideje do realizacije - na jednom mjestu.",
+    heroCta1: "ZATRAŽI PONUDU", heroCta2: "PORTFOLIO",
+    heroFact1: "SAJTOVI · IDENTITET · ŠTAMPA", heroFact2: "PRVI RAZGOVOR BEZ NAPLATE", heroFact3: "RAD NA SRPSKOM I ENGLESKOM",
+    servicesLabel: "USLUGE", servicesTitle: "Usluge",
+    servicesBody: "Sve što je brendu potrebno da bude prepoznatljiv — na ekranu i na papiru. Uzimam ograničen broj projekata mesečno da bi svaki dobio pažnju.",
+    servicesCard: "Ne znaš odakle da počneš? Napravimo plan zajedno na prvom razgovoru.",
+    servicesCardCta: "PIŠI MI",
+    workLabel: "RADOVI", workTitle: "Portfolio",
+    processLabel: "PROCES", processTitle: "Kako radimo",
+    aboutLabel: "O NAMA", aboutTitle: "Mali studio, velika pažnja na detalje",
+    aboutBody1: "Digitalna kreativnost je studio iz Tivta. Ideje pretvaramo u digitalne priče — lijepe, funkcionalne i strateški osmišljene proizvode koji tvoj brend čine prepoznatljivim.",
+    aboutBody2: "Brzo, jasno i tvoje. Uživo u Tivtu ili online — kako ti je lakše.",
+    contactLabel: "KONTAKT", contactTitle: "Imaš ideju? Pošalji upit",
+    contactBody: "Popuni formu ili piši direktno. Odgovaram u toku dana, sa predlogom koraka i procenom roka.",
+    formName: "IME I PREZIME", formNamePh: "npr. Ana Jovanović",
+    formService: "USLUGA", formMsg: "UPIT", formMsgPh: "Šta praviš, za koga, i do kada ti treba.",
+    formCta: "POŠALJI UPIT", formNote: "PODACI SE KORISTE SAMO ZA ODGOVOR NA UPIT.",
+    formSentLabel: "PRIMLJENO", formSent: "Hvala! Upit je zabeležen — javljam se u toku dana."
+  },
+  en: {
+    navHome: "HOME", navContact: "CONTACT",
+    navServices: "SERVICES", navWork: "PORTFOLIO", navProcess: "PROCESS", navAbout: "ABOUT", navCta: "CONTACT",
+    heroEyebrow: "TIVAT · MONTENEGRO",
+    heroTitleA: "Design that",
+    heroTitleB: "lives",
+    heroBody: "Digitalna kreativnost builds websites, visual identity and content for small brands that want to look big. One person, the whole job — from idea to print-ready file.",
+    heroCta1: "GET A QUOTE", heroCta2: "SEE THE WORK",
+    heroFact1: "WEB · IDENTITY · PRINT", heroFact2: "FIRST CALL IS FREE", heroFact3: "WORKING IN SERBIAN & ENGLISH",
+    servicesLabel: "SERVICES", servicesTitle: "What I do",
+    servicesBody: "Everything a brand needs to be recognisable — on screen and on paper. I take a limited number of projects each month so every one gets attention.",
+    servicesCard: "Not sure where to start? We'll map it out together on the first call.",
+    servicesCardCta: "WRITE TO ME",
+    workLabel: "WORK", workTitle: "Portfolio",
+    processLabel: "PROCESS", processTitle: "How we work",
+    aboutLabel: "ABOUT", aboutTitle: "Small studio, serious attention to detail",
+    aboutBody1: "Digitalna kreativnost is a studio based in Tivat. We turn ideas into digital stories — beautiful, functional and strategically designed products that make your brand recognisable.",
+    aboutBody2: "Fast, clear and yours. In person in Tivat or online — whichever suits you.",
+    contactLabel: "CONTACT", contactTitle: "Got an idea? Send an enquiry",
+    contactBody: "Fill in the form or write directly. I reply the same day with suggested next steps and a timeline.",
+    formName: "FULL NAME", formNamePh: "e.g. Ana Jovanović",
+    formService: "SERVICE", formMsg: "ENQUIRY", formMsgPh: "What you're building, for whom, and by when.",
+    formCta: "SEND ENQUIRY", formNote: "YOUR DETAILS ARE USED ONLY TO REPLY.",
+    formSentLabel: "RECEIVED", formSent: "Thank you! Your enquiry is in — I'll get back to you today."
+  }
+};
+
+const SERVICES = {
+  sr: [
+    { no: "01", title: "Izrada sajtova", body: "Jednostavni, brzi sajtovi koji lepo rade na telefonu i jasno vode do upita." },
+    { no: "02", title: "Logo i vizuelni identitet", body: "Logo, boje, pismo i pravila upotrebe — sve na jednom mestu." },
+    { no: "03", title: "Vizit karte", body: "Dizajn i priprema za štampu, sa obe strane osmišljene do detalja." },
+    { no: "04", title: "Katalozi i brošure", body: "Ponuda, cenovnik ili katalog uređeni tako da se lako čitaju." },
+    { no: "05", title: "Objave za Instagram", body: "Setovi objava i story šablona u tvom identitetu, spremni za objavu." },
+    { no: "06", title: "Flajeri i plakati", body: "Za otvaranje, akciju ili događaj — od formata do štamparije." },
+    { no: "07", title: "Meniji za restorane", body: "Meniji koji se lako menjaju i izgledaju kao deo prostora." }
+  ],
+  en: [
+    { no: "01", title: "Websites", body: "Simple, fast sites that work beautifully on a phone and lead clearly to enquiries." },
+    { no: "02", title: "Logo & visual identity", body: "Logo, colours, type and usage rules — all in one place." },
+    { no: "03", title: "Business cards", body: "Design and print-ready files, both sides considered down to the detail." },
+    { no: "04", title: "Catalogues & brochures", body: "Offers, price lists and catalogues laid out to be read easily." },
+    { no: "05", title: "Instagram content", body: "Post sets and story templates in your identity, ready to publish." },
+    { no: "06", title: "Fliers & posters", body: "For an opening, a sale or an event — from format to printer." },
+    { no: "07", title: "Restaurant menus", body: "Menus that are easy to update and feel part of the room." }
+  ]
+};
+
+const PROJECTS = {
+  sr: [
+    { kind: "VIZUELNI IDENTITET · VIZIT KARTE", title: "Psihoterapija", body: "Identitet za psihologa i psihoterapeuta: mekana linija, žalfija zelena i krem papir za osećaj sigurnosti.", img1: "assets/andjela-1.jpg", img2: "assets/andjela-2.jpg" },
+    { kind: "LOGO · ETIKETA", title: "Wine Bar", body: "Logo iscrtan jednom linijom i etiketa za flašu — minimalno, za vinski bar koji ne mora da viče.", img1: "assets/wine-1.jpg", img2: "assets/wine-2.jpg" },
+    { kind: "VIZIT KARTE · IDENTITET", title: "Marmi Jović", body: "Za obradu kamena i marmora: crno-bela karta u teksturi materijala kojim se firma bavi.", img1: "assets/marmi-1.jpg", img2: "assets/marmi-2.jpg" },
+    { kind: "VIZIT KARTE · IDENTITET", title: "Sea & Salt Montenegro", body: "Superyacht agencija iz Tivta: mornarsko plava, pesak i sidro kao jedini znak.", img1: "assets/seasalt-1.jpg", img2: "assets/seasalt-2.jpg" }
+  ],
+  en: [
+    { kind: "VISUAL IDENTITY · BUSINESS CARDS", title: "Psychotherapy", body: "Identity for a psychologist: a soft single line, sage green and cream stock for a sense of safety.", img1: "assets/andjela-1.jpg", img2: "assets/andjela-2.jpg" },
+    { kind: "LOGO · LABEL", title: "Wine Bar", body: "A one-line logo and bottle label — minimal, for a wine bar that doesn't need to shout.", img1: "assets/wine-1.jpg", img2: "assets/wine-2.jpg" },
+    { kind: "BUSINESS CARDS · IDENTITY", title: "Marmi Jović", body: "For a stone and marble workshop: a black-and-white card printed in the material they work with.", img1: "assets/marmi-1.jpg", img2: "assets/marmi-2.jpg" },
+    { kind: "BUSINESS CARDS · IDENTITY", title: "Sea & Salt Montenegro", body: "A superyacht agency from Tivat: navy, sand and an anchor as the only mark.", img1: "assets/seasalt-1.jpg", img2: "assets/seasalt-2.jpg" }
+  ]
+};
+
+const ICONS = {
+  web: "M3 5h18v11H3z M9 20h6 M12 16v4",
+  brand: "M4 20l4-1 10-10-3-3L5 16l-1 4z M14 6l3 3",
+  content: "M4 8h3l1.5-2h7L17 8h3v11H4z M12 13.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z",
+  growth: "M4 20V10 M10 20V6 M16 20v-7 M22 20V4"
+};
+
+const PILLARS = {
+  sr: [
+    { no: "01", title: "Web dizajn", body: "Sajtovi koji izgledaju odlično na telefonu i jasno vode do upita." },
+    { no: "02", title: "Vizuelni identitet", body: "Logo, boje, tipografija i vizit karte koje se pamte." },
+    { no: "03", title: "Štampa", body: "Katalozi, brošure, flajeri, plakati i meniji — spremni za štampariju." },
+    { no: "04", title: "Sadržaj i marketing", body: "Objave i story šabloni za Instagram u tvom identitetu." }
+  ],
+  en: [
+    { no: "01", title: "Web design", body: "Sites that look great on a phone and lead clearly to enquiries." },
+    { no: "02", title: "Visual identity", body: "Logo, colours, type and business cards people keep." },
+    { no: "03", title: "Print", body: "Catalogues, brochures, fliers, posters and menus — press-ready." },
+    { no: "04", title: "Content & marketing", body: "Instagram posts and story templates in your identity." }
+  ]
+};
+
+const STEPS = {
+  sr: [
+    { no: "01", title: "Razgovor", body: "Pitam o biznisu, kupcima i ciljevima. Iz toga izlazi obim posla i cena." },
+    { no: "02", title: "Koncept", body: "Predlažem smer — boje, pismo, strukturu — pre nego što se uđe u detalje." },
+    { no: "03", title: "Dizajn", body: "Radim u krugovima, ti komentarišeš. Dve runde ispravki su uključene." },
+    { no: "04", title: "Predaja", body: "Dobijaš fajlove za štampu i objave, sajt objavljen i kratko uputstvo." }
+  ],
+  en: [
+    { no: "01", title: "Conversation", body: "I ask about the business, the customers and the goals. Scope and price come out of that." },
+    { no: "02", title: "Concept", body: "I propose a direction — colours, type, structure — before we go into detail." },
+    { no: "03", title: "Design", body: "I work in rounds, you comment. Two rounds of revisions are included." },
+    { no: "04", title: "Handover", body: "You get print and social files, the site published, and a short how-to." }
+  ]
+};
+
+const VALUES = {
+  sr: [
+    { tag: "BRZO", text: "Vizit karta u par dana, sajt u dve do tri nedelje." },
+    { tag: "JASNO", text: "Cena i obim se dogovaraju pre početka rada." },
+    { tag: "TVOJE", text: "Svi izvorni fajlovi ostaju tebi, bez zaključavanja." },
+    { tag: "BLIZU", text: "Uživo ili online, kako ti odgovara." }
+  ],
+  en: [
+    { tag: "FAST", text: "A business card in a few days, a website in two to three weeks." },
+    { tag: "CLEAR", text: "Price and scope are agreed before work starts." },
+    { tag: "YOURS", text: "All source files stay with you, no lock-in." },
+    { tag: "CLOSE", text: "Tivat and the whole coast — in person or online, as you prefer." }
+  ]
+};
+
+const FADE = "radial-gradient(115% 115% at 50% 45%, #000 52%, rgba(0,0,0,0.5) 78%, transparent 100%)";
+
+class Component extends DCLogic {
+  state = { lang: null, sent: false, mobile: false, menu: false };
+
+  componentDidMount() {
+    this.mq = window.matchMedia("(max-width: 820px)");
+    this.onMq = e => this.setState({ mobile: e.matches, menu: false });
+    this.setState({ mobile: this.mq.matches });
+    this.mq.addEventListener("change", this.onMq);
+  }
+
+  componentWillUnmount() {
+    if (this.mq) this.mq.removeEventListener("change", this.onMq);
+  }
+
+  lang() {
+    return this.state.lang || (this.props.lang === "en" ? "en" : "sr");
+  }
+
+  btn(active) {
+    return {
+      padding: "6px 12px",
+      borderRadius: "999px",
+      border: "none",
+      cursor: "pointer",
+      fontFamily: "'IBM Plex Mono', monospace",
+      fontSize: "11px",
+      letterSpacing: "1.5px",
+      background: active ? "#D3A84C" : "transparent",
+      color: active ? "#0B0A08" : "#8C867C"
+    };
+  }
+
+  icon(d) {
+    return React.createElement("svg", { width: 30, height: 30, viewBox: "0 0 26 26", fill: "none", stroke: "currentColor", strokeWidth: 1.2, strokeLinecap: "round", strokeLinejoin: "round" },
+      d.split(" M").map((seg, i) => React.createElement("path", { key: i, d: (i ? "M" : "") + seg })));
+  }
+
+  renderVals() {
+    const lang = this.lang();
+    const m = this.state.mobile;
+    const pad = m ? "20px" : "40px";
+    return {
+      mobile: m,
+      desktop: !m,
+      menuOpen: m && this.state.menu,
+      toggleMenu: () => this.setState(s => ({ menu: !s.menu })),
+      closeMenu: () => this.setState({ menu: false }),
+      headerStyle: {
+        position: "sticky", top: 0, zIndex: 50, display: "grid",
+        gridTemplateColumns: m ? "1fr auto" : "1fr auto 1fr",
+        alignItems: "center", gap: m ? "12px" : "20px",
+        padding: m ? "12px 18px" : "14px 28px",
+        background: "rgba(5,5,4,0.9)", backdropFilter: "blur(14px)",
+        borderBottom: "1px solid rgba(211,168,76,0.22)"
+      },
+      logoStyle: { display: "flex", alignItems: "center", gap: m ? "10px" : "12px", justifySelf: m ? "start" : "center", color: "#F2EFEA" },
+      heroSectionStyle: {
+        position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between",
+        minHeight: m ? "auto" : "104vh", padding: "16px 0 0", overflow: "hidden", isolation: "isolate"
+      },
+      heroBgStyle: { position: "absolute", inset: 0, zIndex: -2, backgroundImage: "url('assets/hero-mockup.png')", backgroundSize: "70% auto", backgroundPosition: "100% 34%", backgroundRepeat: "no-repeat" },
+      heroVeilStyle: { position: "absolute", inset: 0, zIndex: -1, background: "linear-gradient(95deg, #050504 0%, #050504 26%, rgba(5,5,4,0.8) 38%, rgba(5,5,4,0.18) 52%, rgba(5,5,4,0.1) 80%, rgba(5,5,4,0.45) 100%), linear-gradient(#050504 0%, rgba(5,5,4,0.06) 16%, rgba(5,5,4,0.06) 74%, #050504 100%)" },
+      heroInnerStyle: {
+        position: "relative", display: "flex", flexDirection: "column", justifyContent: "center",
+        gap: m ? "18px" : "30px", flex: 1, maxWidth: "640px", padding: m ? "72px 16px 78px" : "0 40px"
+      },
+      formStyle: { display: "flex", flexDirection: "column", gap: m ? "18px" : "28px", maxWidth: "560px" },
+      navLogoStyle: { width: m ? "32px" : "42px", height: m ? "29px" : "38px", objectFit: "contain", display: "block" },
+      navWordA: { fontFamily: "'IBM Plex Mono', monospace", fontSize: m ? "8.5px" : "11px", letterSpacing: m ? "2.2px" : "3.2px", color: "#F2EFEA" },
+      navWordB: { fontFamily: "'IBM Plex Mono', monospace", fontSize: m ? "8.5px" : "11px", letterSpacing: m ? "2.2px" : "3.2px", color: "#D39929" },
+      contactLogoStyle: { width: m ? "54px" : "76px", height: "auto", objectFit: "contain", display: "block" },
+      contactLabelStyle: { fontFamily: "'IBM Plex Mono', monospace", fontSize: m ? "9.5px" : "11px", letterSpacing: m ? "2.6px" : "3.4px", color: "#14120F" },
+      infoKeyStyle: { fontFamily: "'IBM Plex Mono', monospace", fontSize: m ? "8.5px" : "10px", letterSpacing: m ? "1.6px" : "2px", color: "#7C766A" },
+      infoMailStyle: { fontFamily: "'IBM Plex Mono', monospace", fontSize: m ? "11px" : "13px", letterSpacing: "0.4px", color: "#8A6413", wordBreak: "break-all" },
+      infoValStyle: { fontFamily: "'IBM Plex Mono', monospace", fontSize: m ? "11px" : "13px", letterSpacing: "0.4px", color: "#8A6413" },
+      infoLocStyle: { fontFamily: "'IBM Plex Mono', monospace", fontSize: m ? "11px" : "13px", letterSpacing: "0.4px", color: "#5F5A50" },
+      sendBtnStyle: { padding: m ? "13px 24px" : "17px 34px", border: "none", borderRadius: "999px", background: "#14120F", color: "#F7EFDC", fontFamily: "'IBM Plex Mono', monospace", fontSize: m ? "10.5px" : "12.5px", letterSpacing: m ? "1.6px" : "2px", fontWeight: 500, cursor: "pointer", transition: "background 250ms" },
+      formNoteStyle: { fontFamily: "'IBM Plex Mono', monospace", fontSize: m ? "9px" : "10.5px", letterSpacing: m ? "1.1px" : "1.4px", color: "#7C766A" },
+      contactHeadStyle: { position: "relative", display: "flex", flexDirection: "column", gap: m ? "12px" : "18px", marginBottom: m ? "28px" : "56px" },
+      ruleDark: { display: m ? "none" : "block", width: "96px", height: "1px", background: "linear-gradient(90deg, rgba(166,124,30,0), #A67C1E)" },
+      aboutRuleStyle: { display: "block", width: "96px", height: "1px", marginTop: "-12px", background: "linear-gradient(90deg, rgba(211,168,76,0), #D3A84C)", display: m ? "none" : "block" },
+      aboutColStyle: { display: "flex", flexDirection: "column", gap: m ? "16px" : "26px" },
+      aboutSubStyle: { margin: 0, fontSize: m ? "13px" : "clamp(19px, 1.7vw, 26px)", lineHeight: 1.28, letterSpacing: m ? "0.6px" : "-0.2px", fontWeight: 500, textTransform: "uppercase", color: "#D3A84C" },
+      aboutBodyStyle: { margin: 0, fontSize: m ? "13px" : "17.5px", lineHeight: m ? 1.6 : 1.68, color: "#B9B2A6", textWrap: "pretty" },
+      stepCellStyle: { display: "flex", flexDirection: "column", gap: m ? "6px" : "10px", padding: m ? "18px 14px" : "34px 26px", background: "rgba(5,5,4,0.35)", border: "1px solid rgba(211,168,76,0.16)", minHeight: m ? "auto" : "170px" },
+      stepNoStyle: { fontFamily: "'IBM Plex Mono', monospace", fontSize: m ? "16px" : "26px", letterSpacing: "-1px", color: "#D3A84C" },
+      stepTitleStyle: { margin: 0, fontSize: m ? "12.5px" : "18px", fontWeight: 500, color: "#F2EFEA" },
+      stepBodyStyle: { margin: 0, fontSize: m ? "11.5px" : "14.5px", lineHeight: 1.5, color: "#A29B8D", textWrap: "pretty" },
+      contactBodyStyle: { margin: m ? "2px 0 0" : "6px 0 0", maxWidth: "46ch", fontSize: m ? "13px" : "17px", lineHeight: m ? 1.6 : 1.68, color: "#5F5A50", textWrap: "pretty" },
+      contactTitleText: m ? COPY[lang].contactTitle.replace("? ", "?\n") : COPY[lang].contactTitle,
+      h2Dark: { margin: 0, fontSize: m ? "22px" : "clamp(42px, 4.2vw, 66px)", lineHeight: 1.02, letterSpacing: m ? "-0.2px" : "-0.5px", fontWeight: 500, textTransform: "uppercase", whiteSpace: m ? "pre-line" : "normal" },
+      h2Light: { margin: 0, fontSize: m ? "22px" : "clamp(42px, 4.2vw, 66px)", lineHeight: 1.02, letterSpacing: m ? "-0.2px" : "-0.5px", fontWeight: 500, textTransform: "uppercase", color: "#F2EFEA" },
+      cardStyle: { display: "flex", flexDirection: "column", gap: m ? "12px" : "22px", animation: "dkReveal 1s linear both", animationTimeline: "view()", animationRange: "entry 8% entry 78%" },
+      cardFrameStyle: { overflow: "hidden", padding: m ? "6px" : "10px", border: "1px solid rgba(166,124,30,0.4)" },
+      cardTextStyle: { display: "flex", flexDirection: "column", gap: m ? "6px" : "10px" },
+      cardNoStyle: { fontFamily: "'IBM Plex Mono', monospace", fontSize: m ? "9.5px" : "11px", letterSpacing: m ? "1.4px" : "2px", color: "#A67C1E" },
+      cardTitleStyle: { margin: 0, fontSize: m ? "13px" : "24px", fontWeight: 500, lineHeight: 1.2, letterSpacing: m ? "0.2px" : 0, color: "#0B0B0A" },
+      cardKindStyle: { fontFamily: "'IBM Plex Mono', monospace", fontSize: m ? "8.5px" : "10px", letterSpacing: m ? "1.2px" : "1.6px", color: "#8A8579" },
+      cardBodyStyle: { margin: m ? "2px 0 0" : "4px 0 0", fontSize: m ? "11.5px" : "14px", lineHeight: 1.55, color: "#55524B", textWrap: "pretty", maxWidth: "42ch" },
+      sectionHeadStyle: { display: "flex", flexDirection: "column", gap: m ? "14px" : "18px", marginBottom: m ? "34px" : "56px" },
+      heroTitleStyle: {
+        margin: 0, fontSize: m ? "30px" : "clamp(42px, 4.2vw, 66px)", lineHeight: m ? 1.04 : 1.02,
+        letterSpacing: m ? "-0.4px" : "-0.5px", fontWeight: 500, textTransform: "uppercase", textWrap: "balance"
+      },
+      heroBodyStyle: { margin: 0, maxWidth: "560px", fontSize: m ? "14.5px" : "19px", lineHeight: 1.62, color: "#B9B2A6", textWrap: "pretty" },
+      heroCtaStyle: {
+        padding: m ? "12px 22px" : "17px 32px", width: "auto", textAlign: "center",
+        borderRadius: "999px", border: "1px solid #D3A84C", color: "#F2EFEA",
+        fontFamily: "'IBM Plex Mono', monospace", fontSize: m ? "10.5px" : "12.5px",
+        letterSpacing: m ? "1.6px" : "2px"
+      },
+      pillarCellStyle: {
+        display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center",
+        gap: m ? "8px" : "14px", padding: m ? "24px 12px 26px" : "62px 30px 66px",
+        borderLeft: m ? "none" : "1px solid rgba(242,239,234,0.12)",
+        borderTop: m ? "1px solid rgba(242,239,234,0.1)" : "none"
+      },
+      pillarTitleStyle: {
+        margin: 0, fontSize: m ? "11.5px" : "16px", fontWeight: 500,
+        letterSpacing: m ? "1.2px" : "2px", textTransform: "uppercase", color: "#F2EFEA"
+      },
+      pillarBodyStyle: {
+        margin: 0, maxWidth: "260px", fontSize: m ? "11.5px" : "14px",
+        lineHeight: 1.5, color: "#9C968B", textWrap: "pretty"
+      },
+      pillarsStyle: {
+        position: "relative", display: "grid",
+        gridTemplateColumns: m ? "repeat(2, minmax(0, 1fr))" : "repeat(auto-fit, minmax(200px, 1fr))",
+        columnGap: m ? "10px" : 0, marginTop: "auto", padding: m ? "0 16px" : 0, background: "rgba(5,5,4,0.22)", backdropFilter: "blur(4px)",
+        borderTop: "1px solid rgba(242,239,234,0.12)", borderBottom: "1px solid rgba(242,239,234,0.12)"
+      },
+      workGridStyle: {
+        display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+        gap: m ? "40px 20px" : "56px 72px", width: "100%", maxWidth: "1200px", margin: "0 auto"
+      },
+      stepsGridStyle: {
+        display: "grid",
+        gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+        gap: "1px", background: "rgba(242,239,234,0.12)", alignSelf: "start"
+      },
+      workPad: { padding: m ? "36px 16px 40px" : "52px 40px 110px", background: "#F7EFDC", color: "#0B0B0A" },
+      aboutStyle: {
+        display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 340px), 1fr))",
+        gap: m ? "40px" : "64px", padding: m ? "44px 16px 46px" : "110px 40px", background: "#050504", color: "#F2EFEA"
+      },
+      contactPad: { position: "relative", overflow: "hidden", padding: m ? "44px 16px 48px" : "100px 40px 110px", background: "#F7EFDC", color: "#14120F" },
+      contactSideStyle: {
+        display: "flex", flexDirection: "column", gap: m ? "14px" : "26px", minWidth: 0,
+        paddingLeft: m ? 0 : "34px", paddingTop: m ? "22px" : 0, marginTop: m ? 0 : "-46px",
+        borderLeft: m ? "none" : "1px solid rgba(166,124,30,0.4)",
+        borderTop: m ? "1px solid rgba(166,124,30,0.4)" : "none"
+      },
+      footerPad: { display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "24px", padding: m ? "20px 16px" : "34px 40px", background: "#050504", borderTop: "1px solid rgba(242,239,234,0.1)", fontFamily: "'IBM Plex Mono', monospace", fontSize: "11px", letterSpacing: "1.8px", color: "#6F6A61" },
+      t: COPY[lang],
+      services: SERVICES[lang],
+      pillars: PILLARS[lang].map((p, i) => ({ ...p, icon: this.icon([ICONS.web, ICONS.brand, ICONS.content, ICONS.growth][i]) })),
+      serviceNames: SERVICES[lang].map(s => s.title),
+      projects: PROJECTS[lang].map((p, i) => ({
+        ...p,
+        no: String(i + 1).padStart(2, "0"),
+        bg1: { position: "absolute", inset: 0, backgroundImage: "url('" + p.img1 + "')", backgroundSize: "cover", backgroundPosition: "center", maskImage: FADE, WebkitMaskImage: FADE, animation: "dkFadeA 7s ease-in-out infinite", animationDelay: (i * 0.4) + "s" },
+        bg2: { position: "absolute", inset: 0, backgroundImage: "url('" + p.img2 + "')", backgroundSize: "cover", backgroundPosition: "center", maskImage: FADE, WebkitMaskImage: FADE, animation: "dkFadeB 7s ease-in-out infinite", animationDelay: (i * 0.4) + "s" }
+      })),
+      steps: STEPS[lang],
+      values: VALUES[lang],
+      instagram: this.props.instagram || "digitalnakreativnost",
+      sent: this.state.sent,
+      notSent: !this.state.sent,
+      srBtnStyle: this.btn(lang === "sr"),
+      enBtnStyle: this.btn(lang === "en"),
+      setSr: () => this.setState({ lang: "sr" }),
+      setEn: () => this.setState({ lang: "en" }),
+      send: () => this.setState({ sent: true })
+    };
+  }
+}
+</script>
+</body>
+</html>
